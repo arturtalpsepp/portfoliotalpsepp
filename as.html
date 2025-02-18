@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mind-Blowing Portfolio</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <!-- AOS CSS для анимаций при прокрутке -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <style>
+    /* Базовые стили и сброс */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Montserrat', sans-serif; background: #000; color: #fff; overflow-x: hidden; }
+    a { text-decoration: none; color: #e50914; transition: color 0.3s ease; }
+    a:hover { color: #ff6f61; }
+    
+    /* Прелоадер */
+    #preloader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    #preloader .loader {
+      border: 8px solid #444;
+      border-top: 8px solid #e50914;
+      border-radius: 50%;
+      width: 60px; height: 60px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Хедер */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1500;
+      backdrop-filter: blur(5px);
+    }
+    header .logo { font-family: 'Cinzel', serif; font-size: 1.8rem; }
+    header nav ul { list-style: none; display: flex; }
+    header nav ul li { margin-left: 30px; }
+    
+    /* Герой секция с видео-фоном */
+    .hero {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+    }
+    .hero video {
+      position: absolute;
+      top: 50%; left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      filter: brightness(0.6);
+    }
+    .hero .overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+    .hero .content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 0 20px;
+    }
+    .hero .content h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 4rem;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeInUp 1s forwards 0.5s;
+    }
+    .hero .content p {
+      font-size: 1.5rem;
+      opacity: 0;
+      animation: fadeInUp 1s forwards 1s;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Секции */
+    section { padding: 120px 40px; }
+    section h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.8rem;
+      text-align: center;
+      margin-bottom: 60px;
+      position: relative;
+    }
+    section h2::after {
+      content: '';
+      width: 80px;
+      height: 3px;
+      background: #e50914;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -10px;
+    }
+    
+    /* Секция "Обо мне" */
+    #about { background: #111; }
+    #about .content { max-width: 800px; margin: auto; text-align: center; font-size: 1.2rem; line-height: 1.8; }
+    
+    /* Портфолио */
+    #portfolio { background: #000; }
+    .portfolio-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+    .portfolio-item {
+      background: #222;
+      border: 2px solid #e50914;
+      overflow: hidden;
+      transition: transform 0.4s ease;
+      width: calc(33.33% - 40px);
+      position: relative;
+    }
+    .portfolio-item:hover { transform: scale(1.05); }
+    .portfolio-item video { width: 100%; display: block; }
+    .portfolio-item .caption {
+      position: absolute;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      width: 100%;
+      padding: 10px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .portfolio-item:hover .caption { opacity: 1; }
+    
+    /* Контакты */
+    #contact { background: #111; text-align: center; }
+    #contact .contact-info { max-width: 600px; margin: auto; font-size: 1.2rem; line-height: 1.8; }
+    
+    /* Подвал */
+    footer { background: #000; text-align: center; padding: 40px; font-size: 0.9rem; }
+    
+    /* Адаптивность */
+    @media (max-width: 992px) {
+      .portfolio-item { width: calc(50% - 40px); }
+      header { padding: 15px 20px; }
+      header nav ul li { margin-left: 20px; }
+    }
+    @media (max-width: 600px) {
+      .portfolio-item { width: 100%; }
+      .hero .content h1 { font-size: 3rem; }
+      .hero .content p { font-size: 1.2rem; }
+      header { flex-direction: column; }
+      header nav ul { flex-direction: column; margin-top: 10px; }
+      header nav ul li { margin: 10px 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Прелоадер -->
+  <div id="preloader">
+    <div class="loader"></div>
+  </div>
+  
+  <!-- Хедер -->
+  <header>
+    <div class="logo">[Ваше Имя]</div>
+    <nav>
+      <ul>
+        <li><a href="#hero">Главная</a></li>
+        <li><a href="#about">Обо мне</a></li>
+        <li><a href="#portfolio">Портфолио</a></li>
+        <li><a href="#contact">Контакты</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <!-- Герой секция с видео-фоном -->
+  <section class="hero" id="hero">
+    <video autoplay muted loop playsinline>
+      <source src="your-hero-video.mp4" type="video/mp4">
+      Ваш браузер не поддерживает видео.
+    </video>
+    <div class="overlay"></div>
+    <div class="content">
+      <h1 data-aos="fade-up">Погрузись в кино</h1>
+      <p data-aos="fade-up" data-aos-delay="200">Портфолио, которое взрывает мозг</p>
+    </div>
+  </section>
+  
+  <!-- Секция "Обо мне" -->
+  <section id="about">
+    <h2 data-aos="fade-up">Обо мне</h2>
+    <div class="content" data-aos="fade-up" data-aos-delay="200">
+      <p>Я [Ваше Имя] — видеограф, создающий кинематографичные истории, которые заставляют сердце биться чаще. Мои работы — это эмоциональные путешествия в мир творчества и вдохновения.</p>
+    </div>
+  </section>
+  
+  <!-- Портфолио -->
+  <section id="portfolio">
+    <h2 data-aos="fade-up">Портфолио</h2>
+    <div class="portfolio-grid">
+      <div class="portfolio-item" data-aos="zoom-in">
+        <video controls>
+          <source src="video1.mp4" type="video/mp4">
+          Ваш браузер не поддерживает видео.
+        </video>
+        <div class="caption">Кинопроект 1</div>
+      </div>
+      <div class="portfolio-item" data-aos="zoom-in" data-aos-delay="100">
+        <video controls>
+          <source src="video2.mp4" type="video/mp4">
+          Ваш браузер не поддерживает видео.
+        </video>
+        <div class="caption">Кинопроект 2</div>
+      </div>
+      <div class="portfolio-item" data-aos="zoom-in" data-aos-delay="200">
+        <video controls>
+          <source src="video3.mp4" type="video/mp4">
+          Ваш браузер не поддерживает видео.
+        </video>
+        <div class="caption">Кинопроект 3</div>
+      </div>
+      <!-- Добавьте дополнительные элементы портфолио при необходимости -->
+    </div>
+  </section>
+  
+  <!-- Контакты -->
+  <section id="contact">
+    <h2 data-aos="fade-up">Контакты</h2>
+    <div class="contact-info" data-aos="fade-up" data-aos-delay="200">
+      <p>Если вы готовы к сотрудничеству или у вас есть вопросы, свяжитесь со мной:</p>
+      <p>Email: <a href="mailto:your.email@example.com">your.email@example.com</a></p>
+      <p>Телефон: +7 (123) 456-7890</p>
+    </div>
+  </section>
+  
+  <!-- Подвал -->
+  <footer>
+    <p>&copy; 2025 [Ваше Имя]. Все права защищены.</p>
+  </footer>
+  
+  <!-- Скрипты -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+    // Убираем прелоадер после загрузки страницы
+    window.addEventListener('load', function() {
+      const preloader = document.getElementById('preloader');
+      preloader.style.opacity = '0';
+      setTimeout(() => { preloader.style.display = 'none'; }, 500);
+    });
+  </script>
+</body>
+</html>
